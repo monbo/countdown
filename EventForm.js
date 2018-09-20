@@ -1,91 +1,89 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   TextInput,
   View,
   Text,
   StyleSheet,
-  TouchableHighlight,
-} from 'react-native';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import { formatDateTime } from './api';
-
+  TouchableHighlight
+} from "react-native";
+import DateTimePicker from "react-native-modal-datetime-picker";
+import { saveEvent, formatDateTime } from "./api";
 
 const styles = StyleSheet.create({
   fieldContainer: {
     marginTop: 20,
     marginBottom: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff"
   },
   text: {
     height: 40,
     margin: 0,
     marginLeft: 7,
     marginRight: 7,
-    paddingLeft: 10,
+    paddingLeft: 10
   },
   borderTop: {
-    borderColor: '#edeeef',
-    borderTopWidth: 0.5,
+    borderColor: "#edeeef",
+    borderTopWidth: 0.5
   },
   button: {
     height: 50,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    alignSelf: 'stretch',
+    backgroundColor: "#48BBEC",
+    borderColor: "#48BBEC",
+    alignSelf: "stretch",
     margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 18,
-  },
+    color: "#fff",
+    fontSize: 18
+  }
 });
 
 class EventForm extends Component {
   state = {
     title: null,
-    date: '',
+    date: ""
   };
 
-  handleChangeTitle = (text) => {
+  handleChangeTitle = text => {
     this.setState({
-      title: text,
+      title: text
     });
-  }
+  };
 
-  handleDatePicked = (date) => {
+  handleDatePicked = date => {
     this.setState({
-      date,
+      date
     });
 
     this.handleDatePickerHide();
-  }
-
+  };
 
   handleDatePickerHide = () => {
     this.setState({
-      showDatePicker: false,
+      showDatePicker: false
     });
-  }
+  };
 
   handleDatePress = () => {
     this.setState({
-      showDatePicker: true,
+      showDatePicker: true
     });
-  }
+  };
 
   handleAddPress = () => {
-    console.log('saving event: ', this.state);
-    this.props.navigation.goBack();
-  }
-
+    saveEvent(this.state).then(() => {
+      this.props.navigation.goBack();
+    });
+  };
   render() {
     return (
       <View
         style={{
-          flex: 1,
+          flex: 1
         }}
       >
         <View style={styles.fieldContainer}>
@@ -112,10 +110,7 @@ class EventForm extends Component {
           />
         </View>
 
-        <TouchableHighlight
-          onPress={this.handleAddPress}
-          style={styles.button}
-        >
+        <TouchableHighlight onPress={this.handleAddPress} style={styles.button}>
           <Text style={styles.buttonText}>Add</Text>
         </TouchableHighlight>
       </View>

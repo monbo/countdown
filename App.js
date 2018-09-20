@@ -9,13 +9,13 @@ export default createStackNavigator({
   list: {
     screen: EventList,
     navigationOptions: () => ({
-      title: "list of events"
-    })
+      title: 'Your events',
+    }),
   },
   form: {
     screen: EventForm,
     navigationOptions: () => ({
-      title: "Add an event"
-    })
-  }
+      title: 'Add an event',
+    }),
+  },
 });
