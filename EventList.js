@@ -1,50 +1,58 @@
 import React, { Component } from "react";
-import { FlatList, Text, StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
+import ActionButton from "react-native-action-button";
+import EventCard from "./EventCard";
 
-import EventCard from './EventCard';
+class EventList extends Component {
+  state = {
+    events: []
+  };
+
+  componentDidMount() {
+     setInterval(() => {
+       this.setState({
+         events: this.state.events.map(evt => ({
+           ...evt,
+           timer: Date.now(),
+         })),
+       });
+     }, 1000);
+
+     const events = require('./db.json').events.map(e => ({
+       ...e,
+       date: new Date(e.date),
+     }));
+     this.setState({ events });
+   }
+
+   handleAddEvent = () => {
+     this.props.navigation.navigate('form')
+   }
+
+  render() {
+    return [
+      <FlatList
+        key="flatlist"
+        data={this.state.events}
+        style={styles.list}
+        keyExtractor={item => item.id}
+        renderItem={({ item, separators }) => (<EventCard event={item} />)}
+      />,
+      <ActionButton
+        key="fab"
+        buttonColor="rgba(321,76,60,1)"
+        onPress={this.handleAddEvent}
+      />,
+    ];
+  }
+}
 
 const styles = StyleSheet.create({
   list: {
     flex: 1,
     paddingTop: 20,
-    backgroundColor: '#ADD8E6'
+    backgroundColor: "#ADD8E6"
   }
 });
-
-class EventList extends Component {
-
-  state = {
-    events: []
-  }
-
-  componentDidMount() {
-    setInterval(() => {
-         this.setState({
-           events: this.state.events.map(evt => ({
-             ...evt,
-             timer: Date.now(),
-           })),
-         });
-       }, 1000);
-    
-    const events = require("./db.json").events.map(e => ({
-      ...e,
-      date: new Date(e.date),
-    }));
-    this.setState({ events });
-  }
-
-  render() {
-    return (
-      <FlatList
-        style={styles.list}
-        data={this.state.events}
-        renderItem={({ item }) => <EventCard event={item} />}
-        keyExtractor = {item => item.id}
-      />
-    );
-  }
-}
-
 
 export default EventList;
