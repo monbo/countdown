@@ -10,7 +10,7 @@ const api =
         .shift()
         .concat(`:3000`)
     : `api.example.com`;
-const url = "192.168.1.133:3000/events"
+const url = "192.168.1.133/events"
 
 export function getEvents() {
   return fetch(url)
